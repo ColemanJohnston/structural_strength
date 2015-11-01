@@ -9,7 +9,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdlib>
-
+#include <cmath>
 using namespace std;
 double mean(vector<int> v, int n);
 double maxMin(vector<int> v, int n);
@@ -60,14 +60,14 @@ int main()
 }
 double mean(vector<int> v, int n)
 {
-    int total = 0;
-    double avg;
+    int total = 0;//sum of all elements in the vector v.
+    double avg;//the average or mean 
     for (int i = 0; i < n; i++)
     {
         total += v[i];
     }
     avg = static_cast<double>(total) / n;
-	return avg;
+	return avg;//return the average or mean
 }
 double maxMin(vector<int> v, int n)
 {
@@ -75,7 +75,12 @@ double maxMin(vector<int> v, int n)
 }
 double variance(vector<int> v, int n , double means)
 {
-	return 3.4;
+	double sum = 0;
+	for(int i = 0; i < n; i++)
+	{
+	  sum += pow( (v[i] - means) , 2 );//(v[i] - mean)^2  
+	}
+	return (sum / n);//take the average and return the result.
 }
 double StdDev(double var)
 {
