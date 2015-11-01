@@ -60,7 +60,14 @@ int main()
 }
 double mean(vector<int> v, int n)
 {
-	return 3.4;
+    int total = 0;
+    double avg;
+    for (int i = 0; i < n; i++)
+    {
+        total += v[i];
+    }
+    avg = static_cast<double>(total) / n;
+	return avg;
 }
 double maxMin(vector<int> v, int n)
 {
