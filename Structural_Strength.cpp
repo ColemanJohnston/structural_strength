@@ -10,11 +10,15 @@
 #include <vector>
 #include <cstdlib>
 #include <cmath>
+#include <iomanip>
+
 using namespace std;
+
 double mean(vector<int> v, int n);
-double maxMin(vector<int> v, int n);
+double max(vector<int> v, int n);
+double min(vector<int> v, int n);
 double variance(vector<int> v, int n, double means);
-double StdDev(double var);
+double stdDev(double var);
 
 int main()
 {
@@ -48,16 +52,25 @@ int main()
 	
 	steelAvg = mean(steel, steel.size());
 	graphiteAvg = mean(graphite, graphite.size());
-	steelVar = (steel, steel.size(), steelAvg);
-	graphiteVar = (graphite, graphite.size(), graphiteAvg);
-	steelSD = steelVar;
-	graphiteSD = graphiteVar;
+	fout << fixed << setprecision(2);
+	fout << "\t\tSteel"<< "\t\t" << "Graphite" << endl;
+	fout << "Mean:\t\t" << steelAvg << "\t" << graphiteAvg << endl;
+	
+	steelVar = variance(steel, steel.size(), steelAvg);
+	graphiteVar = variance(graphite, graphite.size(), graphiteAvg);
+	fout << "Variance: \t" << steelVar << "\t"<< graphiteVar << endl;
+
+	steelSD = stdDev(steelVar);
+	graphiteSD = stdDev(graphiteVar);
+	fout << "StdDeviation: \t" << steelSD << "\t\t"<< graphiteSD <<endl;
 	
 	fin.close();
 	fin1.close();
 	fout.close();
 	return 0;
-}
+}// End of main
+
+//***************************************************************
 double mean(vector<int> v, int n)
 {
     int total = 0;//sum of all elements in the vector v.
@@ -68,21 +81,50 @@ double mean(vector<int> v, int n)
     }
     avg = static_cast<double>(total) / n;
 	return avg;//return the average or mean
-}
-double maxMin(vector<int> v, int n)
+} // End of mean
+
+//***************************************************************
+double max(vector<int> v, int n)
 {
-	return  3.4;
-}
+	int max = v[0];
+	for(int ix = 0; ix < n; ix++)
+	{
+		if(v[ix] > max)
+		{
+			max = v[ix];
+		}
+	}
+	
+	return max;
+}// End of max
+
+//***************************************************************
+double min(vector<int> v, int n)
+{
+	int min = v[0];
+    for(int i = 0; i < n; i++)
+    {
+        if(v[i] < min)
+        {
+            min = v[i];
+        }
+    }
+	return min;
+} // End of min
+
+//***************************************************************
 double variance(vector<int> v, int n , double means)
 {
-	double sum = 0;
+	double sum = 0.0;
 	for(int i = 0; i < n; i++)
 	{
 	  sum += pow( (v[i] - means) , 2 );//(v[i] - mean)^2  
 	}
 	return (sum / n);//take the average and return the result.
-}
-double StdDev(double var)
+} // End of variance
+
+//***************************************************************
+double stdDev(double var)
 {
-	return 3.4;
-}
+	return sqrt(var);
+} /// End of StdDev
