@@ -19,6 +19,7 @@ double max(vector<int> v, int n);
 double min(vector<int> v, int n);
 double variance(vector<int> v, int n, double means);
 double stdDev(double var);
+bool results(int v, double, double);
 
 int main()
 {
@@ -27,6 +28,7 @@ int main()
 	ofstream fout;
 	int coupon;
 	double steelAvg, graphiteAvg, steelVar, graphiteVar, steelSD, graphiteSD;
+	bool steelResult, graphiteResult;
 	
 	fin.open("data1.txt");
 	fin1.open("data2.txt");
@@ -53,16 +55,46 @@ int main()
 	steelAvg = mean(steel, steel.size());
 	graphiteAvg = mean(graphite, graphite.size());
 	fout << fixed << setprecision(2);
-	fout << "\t\tSteel"<< "\t\t" << "Graphite" << endl;
-	fout << "Mean:\t\t" << steelAvg << "\t" << graphiteAvg << endl;
+	fout << "\t\t\t\tSteel"<< "\t\t" << "Graphite" << endl;
+	fout << "Mean:\t\t\t" << steelAvg << "\t" << graphiteAvg << endl;
 	
 	steelVar = variance(steel, steel.size(), steelAvg);
 	graphiteVar = variance(graphite, graphite.size(), graphiteAvg);
-	fout << "Variance: \t" << steelVar << "\t"<< graphiteVar << endl;
+	fout << "Variance: \t\t" << steelVar << "\t"<< graphiteVar << endl;
 
 	steelSD = stdDev(steelVar);
 	graphiteSD = stdDev(graphiteVar);
-	fout << "StdDeviation: \t" << steelSD << "\t\t"<< graphiteSD <<endl;
+	fout << "StdDeviation: \t" << steelSD << "\t\t"<< graphiteSD <<endl << endl;
+	
+	fout << "\tViable Coupons" << endl << endl;
+	
+	fout << "\tSteel\tGraphite" << endl;
+	
+	
+	for(int i = 0; i < steel.size(); i++)
+	{
+		steelResult = results(steel[i], steelSD, steelAvg);
+		graphiteResult = results(graphite[i], graphiteSD, graphiteAvg);
+		if(steelResult == 1)
+		{
+			if(graphiteResult == 1)
+			{
+				fout << "\t" << steel[i] << "\t" << graphite[i]<< endl;	
+			}
+			else
+				fout << "\t" << steel[i] << endl;		
+		}
+		else if(graphiteResult == 1)
+		{
+			if(steelResult == 1)
+			{
+				fout << "\t" << steel[i] << "\t" << graphite[i]<< endl;	
+			}
+			else
+				fout << "\t\t" << graphite[i]<< endl;
+		}
+
+	}
 	
 	fin.close();
 	fin1.close();
@@ -127,4 +159,10 @@ double variance(vector<int> v, int n , double means)
 double stdDev(double var)
 {
 	return sqrt(var);
-} /// End of StdDev
+} // End of StdDev
+
+//***************************************************************
+bool results(int v, double deviation, double means)
+{
+	return((v - (deviation * 3)) >= 1600);
+}
